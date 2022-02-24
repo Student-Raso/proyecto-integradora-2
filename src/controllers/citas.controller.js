@@ -77,11 +77,11 @@ const deleteCita = async (req, res, next) => {
 const updateCita = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { nombre, apellido, telefono, local, fecha_de_cita } = req.body;
+        const { cliente, tipo_corte, precio_corte, local_selec, fecha_cita } = req.body;
 
         const result = await pool.query(
-            "UPDATE citas SET nombre = $1, apellido = $2, telefono =$3, local =$4, fecha_de_cita = $5 WHERE id = $6 RETURNING *",
-            [nombre, apellido, telefono, local, fecha_de_cita, id]
+            "UPDATE citas SET cliente = $1, tipo_corte = $2, precio_corte =$3, local_selec =$4, fecha_cita = $5 WHERE id = $6 RETURNING *",
+            [cliente, tipo_corte, precio_corte, local_selec, fecha_cita, id]
         );
 
         if (result.rows.lenght === 0)
@@ -117,6 +117,7 @@ const cancelCita = async (req, res, next) => {
         next(error);
     }
 }
+
 
 //esportando metodos en objeto
 module.exports = {

@@ -22,11 +22,11 @@ CREATE TABLE clientes(
 	id SERIAL PRIMARY KEY,
 	nombre VARCHAR(255) NOT NULL,
 	celular VARCHAR(255) NOT NULL,
-	num_cliente INTEGER(50) NOT NULL
-)
+	num_cliente INT NOT NULL
+);
 
 CREATE TABLE cortes(
 	id SERIAL PRIMARY KEY,
 	tipo_corte VARCHAR(255) NOT NULL,
 	precio NUMERIC NOT NULL
-)
+);
