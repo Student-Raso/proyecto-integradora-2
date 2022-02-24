@@ -31,23 +31,30 @@ const getCita = async (req, res, next) => {
 
 //Metodo para crear una cita
 const createCita = async (req, res, next) => {
-    const { nombre, apellido, telefono, local, fecha_de_cita } = req.body;
+    const { 
+        cliente, 
+        tipo_corte, 
+        precio_corte, 
+        local_selec, 
+        fecha_cita 
+    } = req.body;
 
     try {
         const result = await pool.query(
-            "INSERT INTO citas (nombre, apellido, telefono, local, fecha_de_cita) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
+            "INSERT INTO citas (cliente, tipo_corte, precio_corte, local_selec, fecha_cita) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
         [
-            nombre,
-            apellido,
-            telefono,
-            local,
-            fecha_de_cita
+            cliente,
+            tipo_corte,
+            precio_corte,
+            local_selec,
+            fecha_cita
         ]);
         res.json(result.rows[0]);
     } catch (error) {
         next(error);
     }
 }
+
 //Metodo para eliminar
 const deleteCita = async (req, res, next) => {
 
@@ -61,11 +68,10 @@ const deleteCita = async (req, res, next) => {
                 message: "Cita no existe",
             });
         return res.sendStatus(204);
+        
     } catch (error) {
         next(error);
     }
-
-
 }
 //Metodo Update
 const updateCita = async (req, res, next) => {
@@ -87,8 +93,29 @@ const updateCita = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+}
+//Metodo para cancelar cita
+const cancelCita = async (req, res, next) => {
+    const { id } = req.params;
+    const { fecha_cancelada } = req.body;
 
+    try {
+        const result = await pool.query(
+            "UPDATE citas SET fecha_cancelada = $1 WHERE id = $2 RETURNING *",
+            [
+                fecha_cancelada,
+                id
+            ]);
+        if (result.rows.lenght === 0)
+            return res.status(404).json({
+                message: "Cita no encontrada",
 
+            });
+        res.json(result.rows[0]);
+
+    } catch (error) {
+        next(error);
+    }
 }
 
 //esportando metodos en objeto
@@ -97,5 +124,6 @@ module.exports = {
     getCita,
     createCita,
     deleteCita,
-    updateCita
+    updateCita,
+    cancelCita
 }

@@ -2,7 +2,9 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 
-const taskRoutes = require('./routes/citas.routes');
+//Requiriendo rutas y guardandolas en constantes
+const citasRoutes = require('./routes/citas.routes');
+const localesRoutes = require('./routes/locales.routes');
 
 const app = express();
 
@@ -11,7 +13,9 @@ app.use(morgan('dev'));
 // con esta linea express va a entender las peticiones con objetos json
 app.use(express.json());
 
-app.use(taskRoutes);
+//Utilizando Rutas
+app.use(citasRoutes);
+app.use(localesRoutes);
 
 app.use((err, req, res, next) =>{
     return res.json({
@@ -19,5 +23,6 @@ app.use((err, req, res, next) =>{
     })
 })
 
+//
 app.listen(4000)
 console.log('server on port 4000')
